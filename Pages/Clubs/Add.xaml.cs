@@ -20,9 +20,40 @@ namespace pcClubs.Pages.Clubs
     /// </summary>
     public partial class Add : Page
     {
-        public Add()
+        Main Main;
+        Models.Clubs Club;
+        public Add(Main Main, Models.Clubs Club = null)
         {
             InitializeComponent();
+            this.Main = Main;
+            if(Club != null)
+            {
+                this.Club = Club;
+                this.Name.Text = Club.Name;
+                this.Address.Text = Club.Address;
+                this.WorkTime.Text = Club.WorkTime;
+                BtnAdd.Content = "Изменить";
+            }
+            
+        }
+
+        private void AddClub(object sender, RoutedEventArgs e)
+        {
+            if(this.Club == null)
+            {
+                Club = new Models.Clubs();
+                Club.Name = this.Name.Text;
+                Club.Address = this.Address.Text;
+                Club.WorkTime = this.WorkTime.Text;
+                this.Main.AllClub.Add(this.Club);
+            } else
+            {
+                Club.Name = this.Name.Text;
+                Club.Address = this.Address.Text;
+                Club.WorkTime= this.WorkTime.Text;
+            }
+            this.Main.AllClub.SaveChanges();
+            MainWindow.init.OpenPages(new Pages.Clubs.Main());
         }
     }
 }
